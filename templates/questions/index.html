@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask Me Anything - Anonymous Questions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .anonymous-badge {
+            background: #e8f5e8;
+            color: #2d5a2d;
+            padding: 10px 20px;
+            border-radius: 25px;
+            margin-bottom: 30px;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .name-section {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .name-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .name-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .toggle-section {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .toggle-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .toggle-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .toggle-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .continue-section {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .continue-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .continue-btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .yes-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .no-btn {
+            background: #6c757d;
+            color: white;
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .toggle-buttons {
+                flex-direction: column;
+            }
+            
+            .continue-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">💭 AMA</div>
+        <div class="subtitle">Ask me anything anonymously</div>
+        <div class="anonymous-badge">🔒 Completely Anonymous</div>
+        
+        <form id="questionForm">
+            <div class="form-group">
+                <label for="question">Your Question:</label>
+                <textarea 
+                    id="question" 
+                    name="question" 
+                    placeholder="Ask me anything... I won't know who you are!"
+                    required
+                ></textarea>
+            </div>
+            
+            <div class="toggle-section">
+                <label>How would you like to submit?</label>
+                <div class="toggle-buttons">
+                    <button type="button" class="toggle-btn active" data-type="anonymous">
+                        🕶️ Anonymous
+                    </button>
+                    <button type="button" class="toggle-btn" data-type="named">
+                        👤 With Name
+                    </button>
+                </div>
+            </div>
+            
+            <div class="name-section" id="nameSection">
+                <div class="form-group">
+                    <label for="name">Your Name (Optional):</label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="name" 
+                        class="name-input"
+                        placeholder="Enter your name"
+                    >
+                </div>
+            </div>
+            
+            <button type="submit" class="submit-btn" id="submitBtn">
+                Send Question 🚀
+            </button>
+        </form>
+        
+        <div id="message" class="message" style="display: none;"></div>
+        
+        <div class="continue-section" id="continueSection">
+            <p>Do you want to ask another question?</p>
+            <div class="continue-buttons">
+                <button class="continue-btn yes-btn" id="askAnotherBtn">
+                    Yes, Ask Another
+                </button>
+                <button class="continue-btn no-btn" id="finishBtn">
+                    No, I'm Done
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('questionForm');
+            const questionTextarea = document.getElementById('question');
+            const nameSection = document.getElementById('nameSection');
+            const nameInput = document.getElementById('name');
+            const toggleButtons = document.querySelectorAll('.toggle-btn');
+            const submitBtn = document.getElementById('submitBtn');
+            const messageDiv = document.getElementById('message');
+            const continueSection = document.getElementById('continueSection');
+            const askAnotherBtn = document.getElementById('askAnotherBtn');
+            const finishBtn = document.getElementById('finishBtn');
+            
+            let isAnonymous = true;
+            
+            // Toggle between anonymous and named
+            toggleButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    toggleButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    isAnonymous = this.dataset.type === 'anonymous';
+                    nameSection.style.display = isAnonymous ? 'none' : 'block';
+                    
+                    if (isAnonymous) {
+                        nameInput.value = '';
+                    }
+                });
+            });
+            
+            // Form submission
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const question = questionTextarea.value.trim();
+                const name = nameInput.value.trim();
+                
+                if (!question) {
+                    showMessage('Please enter a question!', 'error');
+                    return;
+                }
+                
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Sending...';
+                
+                try {
+                    const response = await fetch('/submit/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            question: question,
+                            name: name,
+                            is_anonymous: isAnonymous
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        showMessage('Thank you! Your question has been submitted successfully! 🎉', 'success');
+                        form.style.display = 'none';
+                        continueSection.style.display = 'block';
+                    } else {
+                        showMessage(data.error || 'Something went wrong. Please try again.', 'error');
+                    }
+                } catch (error) {
+                    showMessage('Network error. Please check your connection and try again.', 'error');
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Send Question 🚀';
+                }
+            });
+            
+            // Ask another question
+            askAnotherBtn.addEventListener('click', function() {
+                resetForm();
+            });
+            
+            // Finish
+            finishBtn.addEventListener('click', function() {
+                showMessage('Thank you for your questions! Have a great day! 😊', 'success');
+                continueSection.style.display = 'none';
+            });
+            
+            function showMessage(text, type) {
+                messageDiv.textContent = text;
+                messageDiv.className = `message ${type}`;
+                messageDiv.style.display = 'block';
+            }
+            
+            function resetForm() {
+                form.reset();
+                form.style.display = 'block';
+                continueSection.style.display = 'none';
+                messageDiv.style.display = 'none';
+                
+                // Reset to anonymous mode
+                toggleButtons.forEach(b => b.classList.remove('active'));
+                toggleButtons[0].classList.add('active');
+                nameSection.style.display = 'none';
+                isAnonymous = true;
+            }
+        });
+    </script>
+</body>
+</html>
